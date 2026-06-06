@@ -1,21 +1,20 @@
-// Базовый URL нашего API (Flask сервер)
 const API_URL = 'http://127.0.0.1:5000';
-
-// Элементы интерфейса
 const taskForm = document.querySelector('#task-form');
 const taskInput = document.querySelector('#task-input');
 const taskList = document.querySelector('#task-list');
+const messageBox = document.querySelector('#message');
 
-// Загрузка задач с сервера при старте страницы
+function showMessage(text, isError = false) {
+    messageBox.textContent = text;
+    messageBox.style.color = isError ? 'red' : 'green';
+    setTimeout(() => { messageBox.textContent = ''; }, 5000);
+}
+
 async function loadTasks() {
     try {
         const response = await fetch(`${API_URL}/api/tasks`);
-        if (!response.ok) {
-            throw new Error(`Ошибка HTTP: ${response.status}`);
-        }
-        const tasks = await response.json(); // парсим JSON
-
-        // Очищаем список и добавляем каждую задачу
+        if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
+        const tasks = await response.json();
         taskList.innerHTML = '';
         tasks.forEach(task => {
             const li = document.createElement('li');
@@ -23,40 +22,27 @@ async function loadTasks() {
             taskList.appendChild(li);
         });
     } catch (error) {
-        console.error('Не удалось загрузить задачи:', error);
+        showMessage('Не удалось загрузить задачи.', true);
     }
 }
 
-// Добавление новой задачи
 async function addTask(event) {
-    event.preventDefault(); // не даём форме перезагрузить страницу
-
+    event.preventDefault();
     const title = taskInput.value.trim();
     if (title === '') return;
-
     try {
         const response = await fetch(`${API_URL}/api/tasks`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ title: title }) // превращаем объект в JSON
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title })
         });
-
-        if (!response.ok) {
-            throw new Error(`Ошибка HTTP: ${response.status}`);
-        }
-
-        taskInput.value = '';       // очищаем поле ввода
-        await loadTasks();         // перезагружаем список с сервера
+        if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
+        taskInput.value = '';
+        await loadTasks();
     } catch (error) {
-        console.error('Не удалось добавить задачу:', error);
-        alert('Ошибка при добавлении задачи. Проверь, запущен ли сервер.');
+        showMessage('Ошибка при добавлении задачи. Проверь, запущен ли сервер.', true);
     }
 }
 
-// Назначение обработчиков
 taskForm.addEventListener('submit', addTask);
-
-// Первоначальная загрузка списка
 loadTasks();
