@@ -5,10 +5,6 @@ import db
 app = Flask(__name__)
 CORS(app, origins=["http://127.0.0.1:5500"])
 
-@app.route('/')
-def hello():
-    return '<h1>API трекера задач работает</h1>'
-
 @app.route('/api/tasks', methods=['GET'])
 def get_tasks():
     tasks = db.get_tasks()
@@ -21,8 +17,8 @@ def add_task():
         return jsonify({'error': 'Нужно поле title'}), 400
     db.add_task(data['title'])
     return jsonify({'status': 'ok'}), 201
-@app.route('/api/tasks/<int:task_id>', methods=['DELETE'])
 
+@app.route('/api/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
     db.delete_task(task_id)
     return jsonify({'status': 'ok'}), 200
@@ -34,6 +30,7 @@ def update_task(task_id):
         return jsonify({'error': 'Нужно поле status'}), 400
     db.update_task(task_id, data['status'])
     return jsonify({'status': 'ok'}), 200
+
 if __name__ == '__main__':
-    db.init_db()  # создаст таблицу, если её нет
+    db.init_db()
     app.run(debug=True)

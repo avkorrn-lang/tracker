@@ -6,29 +6,35 @@
     <title>Трекер задач</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
-
 <body>
-    <div class="container"> 
-    <h1>Мой треккер</h1>
-    <div id="message"></div>
-    <p>Здесь я собираю свои задачи на день</p>
-    <form id="task-form">
-        <input type="text" id="task-input" placeholder="Введите задачу...">
-        <button type="submit">Плюс</button>
-    </form>
+    <div class="container">
+        <h1>Мои задачи</h1>
+        <div id="message"></div>
+        <div class="filters">
+    <button class="filter-btn active" data-filter="all">Все</button>
+    <button class="filter-btn" data-filter="active">Активные</button>
+    <button class="filter-btn" data-filter="done">Выполненные</button>
+        </div>
 
-    <ul id="task-list">
-    <template id="task-template">
-    <li>
-        <span class="task-title"></span>
-        <span class="task-status"></span>
-        <button class="done-btn">✓</button>
-        <button class="delete-btn">✕</button>
-    </li>
-</template>
-    </ul>
+        <form id="task-form">
+            <input type="text" id="task-input" placeholder="Введите задачу...">
+            <button type="submit">Добавить</button>
+        </form>
+
+        <ul id="task-list"></ul>
     </div>
-<script src="app.js"></script>
+
+    <template id="task-template">
+        <li>
+            <span class="task-title"></span>
+            <span class="task-status"></span>
+            <div class="task-actions">
+                <button class="done-btn" title="Сменить статус">✓</button>
+                <button class="delete-btn" title="Удалить">✕</button>
+            </div>
+        </li>
+    </template>
+
+    <script src="app.js"></script>
 </body>
 </html>
