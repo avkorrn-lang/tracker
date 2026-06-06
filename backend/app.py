@@ -28,3 +28,5 @@ def add_task():
     }
     tasks.append(task)
     return jsonify(task), 201          # 201 — "создано"
+if __name__ == '__main__':
+    app.run(debug=True)
