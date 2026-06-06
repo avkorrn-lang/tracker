@@ -19,9 +19,14 @@
     </form>
 
     <ul id="task-list">
-    <li>Купить молоко</li>
-    <li>Позвонить маме</li>
-    <li>Выучить HTML</li>
+    <template id="task-template">
+    <li>
+        <span class="task-title"></span>
+        <span class="task-status"></span>
+        <button class="done-btn">✓</button>
+        <button class="delete-btn">✕</button>
+    </li>
+</template>
     </ul>
     </div>
 <script src="app.js"></script>

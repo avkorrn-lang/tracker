@@ -30,3 +30,15 @@ def add_task(title):
     conn.execute('INSERT INTO tasks (title) VALUES (?)', (title,))
     conn.commit()
     conn.close()
+
+def delete_task(task_id):
+    conn = get_db()
+    conn.execute('DELETE FROM tasks WHERE id = ?', (task_id,))
+    conn.commit()
+    conn.close()
+
+def update_task(task_id, status):
+    conn = get_db()
+    conn.execute('UPDATE tasks SET status = ? WHERE id = ?', (status, task_id))
+    conn.commit()
+    conn.close()
